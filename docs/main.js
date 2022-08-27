@@ -34,13 +34,86 @@ function addBombs(params) {
         bombasocultas.push(randomNumber); 
         lugardelabomba.addEventListener('click', bombexploation);
     }
+    mapOfBombs()
     console.table(bombasocultas)
     display_bombasrestantes(); 
+}
+function mapOfBombs() {
+    let i = 0;
+    let x = 0; 
+    let arry = Array(0); 
+    let bombas = bombasocultas.sort((a,b)=>a-b); 
+    while(i !== fila){
+        arry.push(Array(columna)); 
+        for (let index = 0; index < columna; index++){
+            x++
+            arry[i][index] = x
+            for (const key in bombasocultas) {
+                if (arry[i][index] === bombasocultas[key]){
+                    arry[i][index] = "x"
+                }
+            }
+        }
+        i++
+    }
+    arry = arry.map(
+    (item)=> 
+        item.map(
+            (element) => element !== "x"?0:"x"
+        )
+    )
+    console.table(arry)
+
+    for (const key in arry) {
+        let iterator = arry[key]
+        let x = [arry]
+        x  = iterator.forEach(
+            (item, index) => {
+                if (item === "x"){
+                    //Up left 
+                    if (key < 0 && index !== 0){
+                        x[index-1][index-1] = x[index-1][index-1] + 1 
+                    }
+                    //Up center
+                    if (key < 0){
+                        x[index-1][index] = x[index-1][index] + 1
+                    } 
+                    //Up right 
+                    if(key < 0 && index !== columna-1){
+                        x[index-1][index+1] = x[index-1][index+1] + 1
+                    }
+                    //Left 
+                    if(index < 0) {
+                        x[index][index-1] = x[index][index-1] + 1
+                    }
+                    //Right
+                    if(index <= columna-1) {
+                        x[index][index+1] = x[index][index+1] + 1
+                    }
+                    //Bottom left 
+                    if (key !== fila-1 && index !== columna-1){
+                        x[index+1][index-1] = x[index+1][index-1] + 1 
+                    }
+                    //Bottom center
+                    if (key !== fila-1){
+                        x[index+1][index] = x[index+1][index] + 1
+                    } 
+                    //Bttom right 
+                    if(key !== fila-1 && index !== columna-1){
+                        x[index+1][index+1] = x[index+1][index+1] + 1
+                    }
+                }else {return}
+                console.log(x[index+1][index-1])
+            }
+        )
+        // console.log(iterator)
+    }
+    // console.log(bombas)
+    console.table(x)
 } 
 function bombexploation(event) {
     let actualbtn = document.getElementById(event.target.id)
     if (actualbtn.innerHTML !== imgbandera){
-        console.log(actualbtn.innerHTML)
         actualbtn.innerHTML = imgbomba; 
         for (const i in bombasocultas) {
             let b = bombasocultas[i]
