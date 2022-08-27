@@ -8,7 +8,8 @@ const board = [];
 let bombas = 8;
 let bombasrestantes;  
 let banderas_puestas = 0; 
-let bombasocultas = [] 
+let bombasocultas = []; 
+let arry = []; 
 // Codigo central
 window.addEventListener('DOMContentLoaded', main)
 function main(){
@@ -35,13 +36,11 @@ function addBombs(params) {
         lugardelabomba.addEventListener('click', bombexploation);
     }
     mapOfBombs()
-    console.table(bombasocultas)
     display_bombasrestantes(); 
 }
 function mapOfBombs() {
     let i = 0;
     let x = 0; 
-    let arry = Array(0); 
     let bombas = bombasocultas.sort((a,b)=>a-b); 
     while(i !== fila){
         arry.push(Array(columna)); 
@@ -62,54 +61,52 @@ function mapOfBombs() {
             (element) => element !== "x"?0:"x"
         )
     )
-    console.table(arry)
+    let line = 0; 
+    // console.table(arry)
 
-    for (const key in arry) {
-        let iterator = arry[key]
-        let x = [arry]
-        x  = iterator.forEach(
-            (item, index) => {
-                if (item === "x"){
-                    //Up left 
-                    if (key < 0 && index !== 0){
-                        x[index-1][index-1] = x[index-1][index-1] + 1 
+    while(line !== fila){
+        for (let column = 0; column < columna; column++){
+            let item = arry[line][column]
+            let left = column -1; 
+            let right = column + 1;
+            let up = line -1 ; 
+            let bottom = line + 1; 
+            if(item === "x"){
+                // console.log({line,column})
+                //Left
+                if(column >0){
+                    if(line > 0){
+                        arry[up][left] === "x"?"x": arry[up][left]++
                     }
-                    //Up center
-                    if (key < 0){
-                        x[index-1][index] = x[index-1][index] + 1
-                    } 
-                    //Up right 
-                    if(key < 0 && index !== columna-1){
-                        x[index-1][index+1] = x[index-1][index+1] + 1
+                    arry[line][left] === "x"?"x":arry[line][left]++
+                    if(line !== fila-1){
+                        arry[bottom][left] === "x"?"x":arry[bottom][left]++
                     }
-                    //Left 
-                    if(index < 0) {
-                        x[index][index-1] = x[index][index-1] + 1
+                }
+                //Right
+                if(column !== columna-1){
+                    if(line > 0){
+                        arry[up][right] === "x"?"x": arry[up][right]++
                     }
-                    //Right
-                    if(index <= columna-1) {
-                        x[index][index+1] = x[index][index+1] + 1
+                    arry[line][right] === "x"?"x":arry[line][right]++
+                    if(line !== fila-1){
+                        arry[bottom][right] === "x"?"x":arry[bottom][right]++
                     }
-                    //Bottom left 
-                    if (key !== fila-1 && index !== columna-1){
-                        x[index+1][index-1] = x[index+1][index-1] + 1 
-                    }
-                    //Bottom center
-                    if (key !== fila-1){
-                        x[index+1][index] = x[index+1][index] + 1
-                    } 
-                    //Bttom right 
-                    if(key !== fila-1 && index !== columna-1){
-                        x[index+1][index+1] = x[index+1][index+1] + 1
-                    }
-                }else {return}
-                console.log(x[index+1][index-1])
+                }
+                //Up 
+                if(line > 0){
+                    arry[up][column] === "x"?"x": arry[up][column]++
+                }
+                //bottom
+                if(line !== fila-1){
+                    arry[bottom][column] === "x"?"x": arry[bottom][column]++
+                }
             }
-        )
-        // console.log(iterator)
+        }
+
+        line++
     }
-    // console.log(bombas)
-    console.table(x)
+    console.table(arry)
 } 
 function bombexploation(event) {
     let actualbtn = document.getElementById(event.target.id)
