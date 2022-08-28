@@ -245,7 +245,7 @@ function handleClick(id, bombsArround){
 }
 function display_bombasrestantes(){
     let x = document.getElementById('display_bombasrestantes')
-    x.innerHTML = bombasrestantes;
+    x.innerHTML = `${imgbomba}  ${bombasrestantes} ${imgbandera} ${banderas_puestas}`;
 }
 function message(params) {
     let h2 = document.getElementById('message'); 
