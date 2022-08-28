@@ -55,7 +55,6 @@ function addBombs(params) {
 function mapOfBombs() {
     let i = 0;
     let x = 0; 
-    let bombas = bombasocultas.sort((a,b)=>a-b); 
     arry = []
     while(i !== fila){
         arry.push(Array(columna)); 
@@ -128,11 +127,13 @@ function bombexploation(event) {
         for (const i in bombasocultas) {
             let b = bombasocultas[i]
             let x = document.getElementById('button-'+b)
-            x.innerHTML = imgbomba; 
+            if(x.innerHTML !== imgbandera){
+                x.innerHTML = imgbomba; 
+            }
         }
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
-            x.removeEventListener('click', addflag);
+            x.replaceWith(x.cloneNode(true))
         }
         message('Perdiste')
     }
@@ -155,7 +156,7 @@ function addflag(event) {
     if (bombasrestantes === banderas_puestas){
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
-                x.removeEventListener('contextmenu', addflag); 
+             x.removeEventListener('contextmenu', addflag); 
         }
     } else if (bombasrestantes > banderas_puestas){
         for (let i = 1; i < board.length; i++) {
