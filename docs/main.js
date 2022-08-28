@@ -166,11 +166,21 @@ function addflag(event) {
 }
 function removeBomb(event) {
     event.preventDefault();
+    let element = document.getElementById(event.target.id)
+    element.removeEventListener("contextmenu", removeBomb); 
+    element.addEventListener("contextmenu", reClickremoveBomb); 
     bombasReales--; 
     if(bombasReales === 0) {
         message("ganaste")
     }
     console.log("bomb Hit", bombasReales)
+}
+function reClickremoveBomb(event){
+    event.preventDefault(); 
+    let element = document.getElementById(event.target.id)
+    element.addEventListener("contextmenu", removeBomb); 
+    element.removeEventListener("contextmenu", reClickremoveBomb); 
+    bombasReales++; 
 }
 function Flag_logic() {
     for (let id = 1; id < total_botones; id++) {
