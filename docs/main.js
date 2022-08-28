@@ -6,6 +6,7 @@ const imgbomba = '<i class="fas fa-bomb"></i>'
 const imgbandera = '<i class="fas fa-flag" aria-hidden="true"></i>'; 
 const board = []; 
 let bombas = 8;
+let bombasReales = bombas; 
 let bombasrestantes;  
 let banderas_puestas = 0; 
 let bombasocultas = []; 
@@ -28,6 +29,7 @@ function getRandomNumber(min, max) {
 }
 function addBombs(params) {
     bombas = params;
+    bombasReales = bombas; 
     let randomNumber = [1]
     let i = 1
     while (i !== total_botones){
@@ -44,7 +46,6 @@ function addBombs(params) {
     for (let i = 0; i < bombas; i++) {
         let Lugardebomba_id = board[ranNums[i]];
         let lugardelabomba = document.getElementById(Lugardebomba_id)
-        lugardelabomba.removeEventListener('contexmenu', addflag);
         bombasocultas.push(ranNums[i]); 
         lugardelabomba.addEventListener('click', bombexploation);
     }
@@ -132,10 +133,8 @@ function bombexploation(event) {
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
             x.removeEventListener('click', addflag);
-
         }
         message('Perdiste')
-    }else {
     }
     for (const i in board) {
         element = document.getElementById(board[i])
@@ -152,18 +151,26 @@ function addflag(event) {
         bombasrestantes--; 
         display_bombasrestantes();
     } 
-        else {boton_actual.innerHTML = '&nbsp;';banderas_puestas--;bombasrestantes++;display_bombasrestantes(); } 
+    else {boton_actual.innerHTML = '&nbsp;';banderas_puestas--;bombasrestantes++;display_bombasrestantes(); } 
     if (bombasrestantes === banderas_puestas){
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
-            x.removeEventListener('contexmenu', addflag); 
+                x.removeEventListener('contextmenu', addflag); 
         }
     } else if (bombasrestantes > banderas_puestas){
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
-            x.addEventListener('contexmenu', addflag); 
+            x.addEventListener('contextmenu', addflag); 
         }
     }
+}
+function removeBomb(event) {
+    event.preventDefault();
+    bombasReales--; 
+    if(bombasReales === 0) {
+        message("ganaste")
+    }
+    console.log("bomb Hit", bombasReales)
 }
 function Flag_logic() {
     for (let id = 1; id < total_botones; id++) {
@@ -209,6 +216,11 @@ function setNumbers(){
             element.addEventListener("click", ()=>handleClick(button, arra))
         }
         line++
+    }
+    for (index in bombasocultas){
+        let x = document.getElementById(board[bombasocultas[index]])
+        x.addEventListener("contextmenu", removeBomb)
+        x.addEventListener('contextmenu', addflag); 
     }
 }  
 function handleClick(id, bombsArround){
