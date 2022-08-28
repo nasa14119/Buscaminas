@@ -16,6 +16,7 @@ function main(){
     Tabla(); 
     Flag_logic();
     addBombs(bombas);
+    setNumbers();
 }
 // Funciones
 function display_bombas(params) {
@@ -27,12 +28,24 @@ function getRandomNumber(min, max) {
 }
 function addBombs(params) {
     bombas = params;
+    let randomNumber = [1]
+    let i = 1
+    while (i !== total_botones){
+        randomNumber.push(randomNumber[i-1] +1)
+        i++
+    }
+    let ranNums =[]
+    let j = 0; 
+    for (let i = 0; i <= bombas; i++) {
+        j = getRandomNumber(1, randomNumber.length)
+        ranNums.push(randomNumber[j]);
+        randomNumber.splice(j,1);
+    }
     for (let i = 0; i < bombas; i++) {
-        let randomNumber = getRandomNumber(1,total_botones);
-        let Lugardebomba_id = board[randomNumber];
+        let Lugardebomba_id = board[ranNums[i]];
         let lugardelabomba = document.getElementById(Lugardebomba_id)
         lugardelabomba.removeEventListener('click', addflag);
-        bombasocultas.push(randomNumber); 
+        bombasocultas.push(ranNums[i]); 
         lugardelabomba.addEventListener('click', bombexploation);
     }
     mapOfBombs()
@@ -42,6 +55,7 @@ function mapOfBombs() {
     let i = 0;
     let x = 0; 
     let bombas = bombasocultas.sort((a,b)=>a-b); 
+    arry = []
     while(i !== fila){
         arry.push(Array(columna)); 
         for (let index = 0; index < columna; index++){
@@ -62,7 +76,6 @@ function mapOfBombs() {
         )
     )
     let line = 0; 
-    // console.table(arry)
 
     while(line !== fila){
         for (let column = 0; column < columna; column++){
@@ -72,7 +85,6 @@ function mapOfBombs() {
             let up = line -1 ; 
             let bottom = line + 1; 
             if(item === "x"){
-                // console.log({line,column})
                 //Left
                 if(column >0){
                     if(line > 0){
@@ -177,6 +189,29 @@ function Tabla() {
     htmlContent += "</table>"
     Div_tablas.innerHTML = htmlContent; 
     total_botones = td_index; 
+}
+function setNumbers(){
+    let line = 0; 
+    let count = 0;
+    let z = [];  
+    while(line!== fila){
+        for (let column = 0; column < columna; column++){
+            count++
+            let arra = arry[line][column]
+            let button = board[count]
+            let element = document.getElementById(button)
+            element.addEventListener("click", function(){
+                handleClick(button,arra);
+            }, false);
+        }
+        line++
+    }
+}  
+function handleClick(id, bombsArround){
+    element = document.getElementById(id)
+    element.style.backgroundColor = "red"
+    element.innerHTML = bombsArround
+    // console.log(id, bombsArround)
 }
 function display_bombasrestantes(){
     let x = document.getElementById('display_bombasrestantes')
