@@ -44,7 +44,7 @@ function addBombs(params) {
     for (let i = 0; i < bombas; i++) {
         let Lugardebomba_id = board[ranNums[i]];
         let lugardelabomba = document.getElementById(Lugardebomba_id)
-        lugardelabomba.removeEventListener('click', addflag);
+        lugardelabomba.removeEventListener('contexmenu', addflag);
         bombasocultas.push(ranNums[i]); 
         lugardelabomba.addEventListener('click', bombexploation);
     }
@@ -131,9 +131,15 @@ function bombexploation(event) {
         }
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
-            x.removeEventListener('click', addflag); 
+            x.removeEventListener('click', addflag);
+
         }
         message('Perdiste')
+    }else {
+    }
+    for (const i in board) {
+        element = document.getElementById(board[i])
+        element.replaceWith(element.cloneNode(true))
     }
 }
 function addflag(event) {
@@ -147,7 +153,7 @@ function addflag(event) {
         display_bombasrestantes();
     } 
         else {boton_actual.innerHTML = '&nbsp;';banderas_puestas--;bombasrestantes++;display_bombasrestantes(); } 
-    if (bombasrestantes == banderas_puestas){
+    if (bombasrestantes === banderas_puestas){
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
             x.removeEventListener('contexmenu', addflag); 
@@ -200,18 +206,19 @@ function setNumbers(){
             let arra = arry[line][column]
             let button = board[count]
             let element = document.getElementById(button)
-            element.addEventListener("click", function(){
-                handleClick(button,arra);
-            }, false);
+            element.addEventListener("click", ()=>handleClick(button, arra))
         }
         line++
     }
 }  
 function handleClick(id, bombsArround){
     element = document.getElementById(id)
-    element.style.backgroundColor = "red"
-    element.innerHTML = bombsArround
-    // console.log(id, bombsArround)
+    if(bombsArround !== "x"){
+        element.style.backgroundColor = "#c8c8c8"
+        if (bombsArround !== 0){
+            element.innerHTML = bombsArround
+        }
+    }
 }
 function display_bombasrestantes(){
     let x = document.getElementById('display_bombasrestantes')
