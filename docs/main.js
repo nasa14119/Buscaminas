@@ -14,10 +14,10 @@ let arry = [];
 // Codigo central
 window.addEventListener('DOMContentLoaded', main)
 function main(){
+    bombasrestantes = 0; 
+    banderas_puestas = 0; 
+    display_bombasrestantes();
     Tabla(); 
-    Flag_logic();
-    addBombs(bombas);
-    setNumbers();
 }
 // Funciones
 function display_bombas(params) {
@@ -27,7 +27,7 @@ function display_bombas(params) {
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
-function addBombs(params) {
+ function addBombs(params) {
     bombas = params;
     bombasReales = bombas; 
     let randomNumber = [1]
@@ -47,7 +47,7 @@ function addBombs(params) {
         let Lugardebomba_id = board[ranNums[i]];
         let lugardelabomba = document.getElementById(Lugardebomba_id)
         bombasocultas.push(ranNums[i]); 
-        lugardelabomba.addEventListener('click', bombexploation);
+        lugardelabomba?.addEventListener('click', bombexploation);
     }
     mapOfBombs()
     display_bombasrestantes(); 
@@ -56,7 +56,7 @@ function mapOfBombs() {
     let i = 0;
     let x = 0; 
     arry = []
-    while(i !== fila){
+    while(i < fila){
         arry.push(Array(columna)); 
         for (let index = 0; index < columna; index++){
             x++
@@ -77,7 +77,7 @@ function mapOfBombs() {
     )
     let line = 0; 
 
-    while(line !== fila){
+    while(line < fila){
         for (let column = 0; column < columna; column++){
             let item = arry[line][column]
             let left = column -1; 
@@ -86,7 +86,7 @@ function mapOfBombs() {
             let bottom = line + 1; 
             if(item === "x"){
                 //Left
-                if(column >0){
+                if(column > 0){
                     if(line > 0){
                         arry[up][left] === "x"?"x": arry[up][left]++
                     }
@@ -96,7 +96,7 @@ function mapOfBombs() {
                     }
                 }
                 //Right
-                if(column !== columna-1){
+                if(column < columna-1){
                     if(line > 0){
                         arry[up][right] === "x"?"x": arry[up][right]++
                     }
@@ -119,6 +119,7 @@ function mapOfBombs() {
         line++
     }
     console.table(arry)
+    setNumbers(); 
 } 
 function bombexploation(event) {
     let actualbtn = document.getElementById(event.target.id)
@@ -145,6 +146,7 @@ function bombexploation(event) {
 function addflag(event) {
     event.preventDefault(); // Para que no salga el contex menu 
     let boton_actual = document.getElementById(event.target.id);
+    let iner = boton_actual.innerHTML
     if (boton_actual.innerHTML == "&nbsp;") 
     { 
         boton_actual.innerHTML = imgbandera; 
@@ -152,8 +154,10 @@ function addflag(event) {
         bombasrestantes--; 
         display_bombasrestantes();
     } 
-    else {boton_actual.innerHTML = '&nbsp;';banderas_puestas--;bombasrestantes++;display_bombasrestantes(); } 
-    if (bombasrestantes === banderas_puestas){
+    else {boton_actual.innerHTML = "&nbsp;";
+        banderas_puestas--;bombasrestantes++;
+        display_bombasrestantes(); } 
+    if (bombasrestantes === 0 && banderas_puestas === bombas){
         for (let i = 1; i < board.length; i++) {
             let x = document.getElementById('button-'+i)
              x.removeEventListener('contextmenu', addflag); 
@@ -190,6 +194,7 @@ function Flag_logic() {
         actualbtn.innerHTML = "&nbsp;";
         board[id] = actualbtn.id; 
     }
+    addBombs(bombas);
 }
 function Tabla() {
     bombasrestantes = bombas; 
@@ -213,15 +218,16 @@ function Tabla() {
     htmlContent += "</table>"
     Div_tablas.innerHTML = htmlContent; 
     total_botones = td_index; 
+    Flag_logic();
 }
-function setNumbers(){
+ function setNumbers(){
     let line = 0; 
     let count = 0;
     let z = [];  
-    while(line!== fila){
+    while(line !== fila){
         for (let column = 0; column < columna; column++){
             count++
-            let arra = arry[line][column]
+            let arra = arry?.[line]?.[column]
             let button = board[count]
             let element = document.getElementById(button)
             element.addEventListener("click", ()=>handleClick(button, arra))
@@ -230,8 +236,8 @@ function setNumbers(){
     }
     for (index in bombasocultas){
         let x = document.getElementById(board[bombasocultas[index]])
-        x.addEventListener("contextmenu", removeBomb)
-        x.addEventListener('contextmenu', addflag); 
+        x?.addEventListener("contextmenu", removeBomb)
+        x?.addEventListener('contextmenu', addflag); 
     }
 }  
 function handleClick(id, bombsArround){
@@ -242,6 +248,7 @@ function handleClick(id, bombsArround){
             element.innerHTML = bombsArround
         }
     }
+    element.replaceWith(element.cloneNode(true))
 }
 function display_bombasrestantes(){
     let x = document.getElementById('display_bombasrestantes')
