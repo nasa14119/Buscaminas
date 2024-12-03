@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <title>Buscaminas</title>
-    <script src="https://kit.fontawesome.com/7c894cf63b.js" crossorigin="anonymous" defer type="module"></script>
-    <link rel="stylesheet" href="main.css">
-</head>
-<body>
+    <script
+      src="https://kit.fontawesome.com/53073dea72.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
     <h2>Buscaminas</h2>
     <div class="columna_fila_boton">
-        <div class="label1">
-            <label >Fila</label>
-        </div>
-        <div class="inputfila">
-            <input type="number"  id="fila" value="6" min="3" max="18" onchange="fila = this.value; main()">
-        </div>
-        <div class="label2">
-            <label for="columna">Columna</label>
-        </div>
-        <div class="inputcolumna">
-            <input type="number"  id="columna" value="6" min="3" max="18" onchange="columna = this.value; main()">
-        </div>
-        <div class="label3">
-            <label for="columna">Bombas</label>
-        </div>
-        <div class="inputrange">
-            <input class="range" type="range"  id="bombas" value="8" min="3" max="18" onchange='bombas = this.value; main();display_bombas(bombas)'>
-        </div>
-        <div class="label4">
-            <label id="message_bomba">8</label>
-        </div>
+      <div class="label1">
+        <label>Fila</label>
+      </div>
+      <div class="inputfila">
+        <input
+          type="number"
+          id="fila"
+          value="6"
+          min="3"
+          max="18"
+          onchange="fila = this.value; main()"
+        />
+      </div>
+      <div class="label2">
+        <label for="columna">Columna</label>
+      </div>
+      <div class="inputcolumna">
+        <input
+          type="number"
+          id="columna"
+          value="6"
+          min="3"
+          max="18"
+          onchange="columna = this.value; main()"
+        />
+      </div>
+      <div class="label3">
+        <label for="columna">Bombas</label>
+      </div>
+      <div class="inputrange">
+        <input
+          class="range"
+          type="range"
+          id="bombas"
+          value="8"
+          min="3"
+          max="18"
+          onchange="bombas = this.value; main();display_bombas(bombas)"
+        />
+      </div>
+      <div class="label4">
+        <label id="message_bomba">8</label>
+      </div>
     </div>
-    <br>
+    <br />
     <h2 id="display_bombasrestantes">&nbsp;</h2>
     <div id="table"></div>
-</body>
-<footer>
+  </body>
+  <footer>
     <h2 id="message"></h2>
-    <button onclick="main()"> Try Again</button>
+    <button onclick="main()">Try Again</button>
     <script src="main.js"></script>
-</footer>
+  </footer>
 </html>
